@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using test.sql;
 
-namespace EF8Perf900
+namespace EF8Perf810
 {
     [TestClass]
     public class MigrationTests
