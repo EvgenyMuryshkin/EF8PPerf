@@ -76,6 +76,7 @@ namespace EF8Perf810
             using (var ctx = Context)
             {
                 var refSet = new BaseRefCollection();
+                refSet.Add(Guid.NewGuid());
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
         }

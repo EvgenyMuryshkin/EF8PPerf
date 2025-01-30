@@ -4,37 +4,38 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class GenericBaseRefCollection<T, TEntity> : IEnumerable<Guid>, ICollection<Guid>
-        where T : ICollection<Guid>, new()
+    public class GenericBaseRefCollection<TArg, TEntity, T> : IEnumerable<TArg>, ICollection<TArg>
+        where TArg : struct
         where TEntity : IEntity
+        where T : ICollection<TArg>, new()
     {
-        protected HashSet<Guid> _container = new();
+        protected HashSet<TArg> _container = new();
 
         public GenericBaseRefCollection()
         {
         }
 
-        public void Add(Guid id) => _container.Add(id);
+        public void Add(TArg id) => _container.Add(id);
 
-        public bool Contains(Guid id) => _container.Contains(id);
+        public bool Contains(TArg id) => _container.Contains(id);
 
         IEnumerator IEnumerable.GetEnumerator() => _container.GetEnumerator();
-        IEnumerator<Guid> IEnumerable<Guid>.GetEnumerator() => _container.GetEnumerator();
+        IEnumerator<TArg> IEnumerable<TArg>.GetEnumerator() => _container.GetEnumerator();
 
 
-        int ICollection<Guid>.Count => _container.Count;
+        int ICollection<TArg>.Count => _container.Count;
 
-        bool ICollection<Guid>.IsReadOnly => false;
+        bool ICollection<TArg>.IsReadOnly => false;
 
 
-        void ICollection<Guid>.Add(Guid item) => _container.Add(item);
+        void ICollection<TArg>.Add(TArg item) => _container.Add(item);
 
-        void ICollection<Guid>.Clear() => _container.Clear();
+        void ICollection<TArg>.Clear() => _container.Clear();
 
-        bool ICollection<Guid>.Contains(Guid item) => _container.Contains(item);
+        bool ICollection<TArg>.Contains(TArg item) => _container.Contains(item);
 
-        void ICollection<Guid>.CopyTo(Guid[] array, int arrayIndex) => _container.CopyTo(array, arrayIndex);
+        void ICollection<TArg>.CopyTo(TArg[] array, int arrayIndex) => _container.CopyTo(array, arrayIndex);
 
-        bool ICollection<Guid>.Remove(Guid item) => _container.Remove(item);
+        bool ICollection<TArg>.Remove(TArg item) => _container.Remove(item);
     }
 }

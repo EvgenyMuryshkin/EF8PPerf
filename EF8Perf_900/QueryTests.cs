@@ -76,6 +76,7 @@ namespace EF8Perf900
             using (var ctx = Context)
             {
                 var refSet = new BaseRefCollection();
+                refSet.Add(Guid.NewGuid());
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
         }
@@ -86,7 +87,10 @@ namespace EF8Perf900
             using (var ctx = Context)
             {
                 // same class with generic arguments is not working
-                var refSet = new GenericBaseRefCollection<HashSet<Guid>, IEntity>();
+                var refSet = new GenericBaseRefCollection<Guid, IEntity, HashSet<Guid>>();
+                refSet.Add(Guid.NewGuid());
+
+                //IEnumerable<IEntity> ir = refSet;
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
         }
