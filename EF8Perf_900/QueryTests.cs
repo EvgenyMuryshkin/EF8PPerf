@@ -88,6 +88,34 @@ namespace EF8Perf900
             {
                 // same class with generic arguments is not working
                 var refSet = new GenericBaseRefCollection<Guid, IEntity, HashSet<Guid>>();
+                //var refSet = new GenericBaseRefCollection<IEntity>();
+                refSet.Add(Guid.NewGuid());
+
+                //IEnumerable<IEntity> ir = refSet;
+                var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
+            }
+        }
+
+        [TestMethod]
+        public void BaseGuidCollection()
+        {
+            using (var ctx = Context)
+            {
+                // same class with generic arguments is not working
+                var refSet = new BaseGuidCollection<Guid>();
+                refSet.Add(Guid.NewGuid());
+
+                //IEnumerable<IEntity> ir = refSet;
+                var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
+            }
+        }
+
+        [TestMethod]
+        public void HashSetGuidCollection()
+        {
+            using (var ctx = Context)
+            {
+                var refSet = new HashSetGuidCollection<IEntity>();
                 refSet.Add(Guid.NewGuid());
 
                 //IEnumerable<IEntity> ir = refSet;
