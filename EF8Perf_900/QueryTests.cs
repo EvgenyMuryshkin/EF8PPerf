@@ -3,6 +3,11 @@ using test.sql;
 
 namespace EF8Perf900
 {
+    public class TestEntity : IEntity
+    {
+        public Guid Id { get; set; }
+    }
+
     [TestClass]
     public class QueryTests
     {
@@ -115,12 +120,28 @@ namespace EF8Perf900
         {
             using (var ctx = Context)
             {
-                var refSet = new HashSetGuidCollection<IEntity>();
+                var refSet = new HashSetGuidCollection<TestEntity>();
                 refSet.Add(Guid.NewGuid());
 
                 //IEnumerable<IEntity> ir = refSet;
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
+        }
+        void ContainsInEnumerableWithOption(bool flag)
+        {
+            using (var ctx = Context)
+            {
+                var ids = flag ? ctx.Raws.Select(c => c.Id) : null;
+
+                var items4 = ctx.Raws.Where(r => ids != null && ids.Contains(r.Id)).ToList();
+            }
+        }
+
+        [TestMethod]
+        public void ContainsInEnumerable()
+        {
+            ContainsInEnumerableWithOption(true);
+            ContainsInEnumerableWithOption(false);
         }
     }
 }

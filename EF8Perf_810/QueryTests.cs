@@ -88,8 +88,26 @@ namespace EF8Perf810
             {
                 // same class with generic arguments is not working
                 var refSet = new GenericBaseRefCollection<HashSet<Guid>, IEntity>();
+                refSet.Add(Guid.NewGuid());
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
+        }
+
+        void ContainsInEnumerableWithOption(bool flag)
+        {
+            using (var ctx = Context)
+            {
+                var ids = flag ? ctx.Raws.Select(c => c.Id) : null;
+
+                var items4 = ctx.Raws.Where(r => ids != null && ids.Contains(r.Id)).ToList();
+            }
+        }
+
+        [TestMethod]
+        public void ContainsInEnumerable()
+        {
+            ContainsInEnumerableWithOption(true);
+            ContainsInEnumerableWithOption(false);
         }
     }
 }
