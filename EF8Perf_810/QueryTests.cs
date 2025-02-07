@@ -104,6 +104,19 @@ namespace EF8Perf810
         }
 
         [TestMethod]
+        public void HashSetContains()
+        {
+            using (var ctx = Context)
+            {
+                var refSet = new HashSet<Guid>();
+                refSet.Add(Guid.NewGuid());
+
+                //IEnumerable<IEntity> ir = refSet;
+                var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
+            }
+        }
+
+        [TestMethod]
         public void ContainsInEnumerable()
         {
             ContainsInEnumerableWithOption(true);

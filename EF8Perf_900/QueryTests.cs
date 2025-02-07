@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using test.sql;
 
 namespace EF8Perf900
@@ -127,6 +128,37 @@ namespace EF8Perf900
                 var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
             }
         }
+
+        [TestMethod]
+        public void HashSetContains()
+        {
+            using (var ctx = Context)
+            {
+                var refSet = new HashSet<Guid>();
+                refSet.Add(Guid.NewGuid());
+
+                //IEnumerable<IEntity> ir = refSet;
+                var items4 = ctx.Raws.Where(r => refSet.Contains(r.Id)).ToList();
+            }
+        }
+
+        public void HashSetGuidCollectionExpression(Expression<Func<tstRawDbEntity, bool>> predicate)
+        {
+            using (var ctx = Context)
+            {
+                var items4 = ctx.Raws.Where(predicate).ToList();
+            }
+        }
+
+        [TestMethod]
+        public void HashSetGuidCollectionExpression()
+        {
+            var refSet = new HashSetGuidCollection<tstRawDbEntity>();
+            refSet.Add(Guid.NewGuid());
+
+            HashSetGuidCollectionExpression(t => refSet.Contains(t.Id));
+        }
+
         void ContainsInEnumerableWithOption(bool flag)
         {
             using (var ctx = Context)
